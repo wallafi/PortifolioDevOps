@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+  barsystem:
+    image: php:7.2-apache
+    container_name: barsystem
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html/
+    ports:
+      - "8588:80"

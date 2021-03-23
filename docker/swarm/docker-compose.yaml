@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  site_barsystem:
+    image: php:7.2-apache 
+    volumes:
+      - ./site_barsystem:/var/www/html 
+    working_dir: /var/www/html/
+    ports:
+      - "8089:80"
+    deploy:
+      # replicas: 4 
+      mode: replicated 
+      restart_policy:
+        condition: on-failure 
+      placement:
+        constraints: [node.role == worker]
+
+# version: "3.3"
+# services:
+#   barsystem:
+#     image: php:7.2-apache
+#     container_name: barsystem
+#     volumes:
+#       - ./:/var/www/html
+#     working_dir: /var/www/html/
+#     ports:
+#       - "8588:80"
