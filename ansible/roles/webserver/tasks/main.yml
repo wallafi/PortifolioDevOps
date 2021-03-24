@@ -1,0 +1,8 @@
+---
+- name: 'preprando servidor'
+  apt:
+    name:
+    - apache2 
+    - php-mysql 
+    state: latest 
+  become: yes

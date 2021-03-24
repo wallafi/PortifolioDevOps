@@ -1,0 +1,15 @@
+--- 
+- name: 'copiando site'
+  copy:
+    src: '/home/wallafi/Área de Trabalho/aws/PortifolioDevOps/ansible/site_barsystem'
+    dest: '/var/www/html/'
+  become: yes 
+
+- name: 'apagando index.html'
+  file:
+    path: /var/www/html/index.html
+    state: absent 
+    remote_src: yes 
+  become: yes
+  notify:
+    restart apache

@@ -1,0 +1,31 @@
+---
+- name: 'instalando mysql'
+  apt:
+    name:
+    - mysql-server:5.7 
+    - php-mysql 
+    state: latest 
+  become: yes 
+
+- name: 'criando banco'
+  mysql_db:
+    name: "{{ db }}"
+    state: present 
+    login_user: root 
+  become: yes 
+
+- name: 'criando usuario'
+  mysql_user:
+    name: "{{ nome }}"
+    password: "{{ senha }}"
+    state: present  
+    priv: "{{ db }}.*:ALL"
+    login_user: root 
+    host: "{{ item }}"
+  become: yes 
+  with_items:
+    - 'Localhost'
+    - '127.0.0.1'
+    - '192.168.2.1'
+  notify:
+    restart mysql

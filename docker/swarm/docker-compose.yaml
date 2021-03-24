@@ -2,11 +2,14 @@ version: '3.3'
 services:
   site_barsystem:
     image: php:7.2-apache 
+    container_name: site 
     volumes:
       - ./site_barsystem:/var/www/html 
     working_dir: /var/www/html/
     ports:
       - "8089:80"
+    networks:
+      - swarm
     deploy:
       # replicas: 4 
       mode: replicated 
@@ -14,6 +17,32 @@ services:
         condition: on-failure 
       placement:
         constraints: [node.role == worker]
+
+  db:
+    image: mysql:5.7 
+    container_name: db 
+    volumes:
+      - ./db:/home
+    ports:
+      - "3306:3306"
+    networks:
+      - swarm
+    environment:
+      MYSQL_DATABASE: barsystem_contato 
+      MYSQL_USER: root 
+      MYSQL_PASSWORD: root123 
+      MYSQL_ROOT_PASSWORD: root123
+    deploy:
+      mode: replicated 
+      restart_policy:
+        condition: on-failure 
+      placement:
+        constraints: [node.role == worker]
+
+networks:
+  swarm:
+    driver: overlay 
+
 
 # version: "3.3"
 # services:
