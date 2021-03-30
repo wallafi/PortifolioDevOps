@@ -1,0 +1,42 @@
+pipeline {
+
+    agent any
+    environment {
+
+        registry = "wallafi/first"
+        registryCredential = "dockerhub_id" 
+        dockerImage = ""
+    }
+
+    stages {
+
+        stage('git url') {
+            steps {
+                git url: 'https://github.com/wallafi/jenkins-todo-list.git'
+            }
+        }
+        stage('register') {
+            steps {
+                script {
+                    dockerImage = docker.build registry
+                }
+            }
+        }
+        stage('registry') {
+            steps {
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('run') {
+            steps {
+                script {
+                    dockerImage.run('-p 8080:80 --name first')
+                }
+            }
+        }
+    }
+}

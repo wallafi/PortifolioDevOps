@@ -1,0 +1,33 @@
+apiVersion: apps/v1 
+kind: Deployment 
+metadata:
+  name: mysql-deployment
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: mysql-deployment
+  template:
+    metadata:
+      labels:
+        app: mysql-deployment 
+    spec:
+      containers:
+        - name: mysql-image 
+          image: mysql:5.7 
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3306 
+          envFrom:
+            - configMapRef:
+                name: config-mysql 
+          volumeMounts:
+            - mountPath: /var/lib/mysql 
+              name: vol-mysql
+      volumes:
+        - name: vol-mysql
+          persistentVolumeClaim:
+            claimName: pvc-mysql

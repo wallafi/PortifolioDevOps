@@ -1,0 +1,14 @@
+apiVersion: v1 
+kind: ConfigMap 
+metadata:
+  name: config-wordpress 
+value:
+  WORDPRESS_DB_HOST: svc-mysql
+  WORDPRESS_DB_PASSWORD: wordpress2020
+---
+apiVersion: v1 
+kind: ConfigMap 
+metadata:
+  name: config-mysql 
+value:
+  MYSQL_ROOT_PASSWORD: wordpress2020
